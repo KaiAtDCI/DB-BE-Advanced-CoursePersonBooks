@@ -1,8 +1,8 @@
 "use strict"
 import dotenv from 'dotenv'; dotenv.config();
 import mongoose from "mongoose";
-import { Person } from "./Person.js"; export { Person };
-import { Course } from "./Course.js"; export { Course };
+import { Person } from "./models/Person.js"; export { Person };
+import { Course } from "./models/Course.js"; export { Course };
 
 export async function connect() {
   try {
@@ -16,9 +16,4 @@ export async function connect() {
 
 export async function disconnect() {
   await mongoose.disconnect();
-}
-
-export async function deleteAllCollections() {
- await Person.deleteMany({}); // todo: delete cascade possible?
- await Course.deleteMany({});
 }

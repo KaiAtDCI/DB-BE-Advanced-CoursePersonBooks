@@ -1,31 +1,39 @@
 "use strict"
-import {
-  connect,
-  disconnect,
-  deleteAllCollections,
-  Person, Course
-} from "./model/model.js";
+import { connect, disconnect, Person, Course } from "./database/connector.js";
 
 await connect();
 
-await deleteAllCollections();
+// init (delete) database
+// await Person.deleteAll(); // call custom static function
+// await Course.deleteAll(); // call custom static function
+await Person.deleteMany();
+await Course.deleteMany();
 
-const course1 = await Course.create({ title: 'Nauran for Foreigners' });
-course1.save();
-const course2 = await Course.create({ title: 'Japanese for Insiders' });
-course2.save();
+
+// create model data
 const person = await Person.create({ name: "Gonzo", email: "gonzo@example.org" });
+const course1 = await Course.create({ title: 'Nauran for Foreigners' });
+const course2 = await Course.create({ title: 'Japanese for Insiders' });
 person.courses.push(course1);
 person.courses.push(course2);
+course1.persons.push(person);
+course2.persons.push(person);
+
+// persist model data
 await person.save();
+await course1.save();
+await course2.save();
 
-// console.log(await Person.findOne({}).populate("courses", ["title"]));
+// query and log
+console.log(await Person.findOne({}).populate("courses", ["title"]));
+// const query = await Person
+//   .findOne({})
+//   .select("-email")
+//   .populate("courses", ["title"]);
+// console.log(query);
 
-const query = await Person
+console.log(await Course
   .findOne({})
-  .select("-email")
-  .populate("courses", ["title"]);
-console.log(query);
+  .populate("persons", ["name"]));
 
 await disconnect();
-
