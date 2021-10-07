@@ -8,7 +8,7 @@ const bookSchema = new Schema({
     type: String,
     unique: true,
     minlength: 3,
-    maxlength: 30,
+    maxlength: 50,
     required: true,
   },
   courses: [{
@@ -21,4 +21,4 @@ bookSchema.statics.deleteAll = function deleteAll() {
   return this.deleteMany({}).exec();
 }
 
-export const Book = mongoose.model('Book', bookSchema);
+export const Book = mongoose.model('books', bookSchema);

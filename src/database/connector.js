@@ -3,6 +3,7 @@ import dotenv from 'dotenv'; dotenv.config();
 import mongoose from "mongoose";
 import { Person } from "./models/Person.js"; export { Person };
 import { Course } from "./models/Course.js"; export { Course };
+import { Book } from "./models/Book.js"; export { Book };
 
 export async function connect() {
   try {
@@ -16,4 +17,10 @@ export async function connect() {
 
 export async function disconnect() {
   await mongoose.disconnect();
+}
+
+export async function deleteAllCollectionEntries() {
+  await Person.deleteMany();
+  await Course.deleteMany();
+  await Book.deleteMany();
 }
